@@ -33,7 +33,7 @@ public class DynamicPlan {
             soluNum[i][0]=1;
         //moneyIndex求和
         for(int i=1;i<money.length;i++)
-            for(int j=1;j<aim;j++){
+            for(int j=1;j<=aim;j++){
                 int num=0;
                 for(int k=0;j>=k*money[i];k++)
                     num+=soluNum[i-1][j-k*money[i]];
