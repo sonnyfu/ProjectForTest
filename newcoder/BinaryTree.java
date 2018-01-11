@@ -173,7 +173,10 @@ public class BinaryTree {
 
     /**
      * 按格式打印二叉树
-     * 在层序遍历的基础上增加两个变量实现按行打印
+     * 原理：在用队列添加每层的最右节点时nextLast，此时弹出的节点是上一层的最右节点last。
+     * 因此从第二层开始从左到右入队的节点就被nextLast指向，直到弹出的节点是上一层的最右节点last，此时更新（
+     * last=nextLast）
+     * 
      * @param root
      */
     static  void printTreeAsFormated(TreeNode root){
