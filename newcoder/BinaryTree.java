@@ -53,6 +53,25 @@ public class BinaryTree {
     }
 
     /**
+     * 问题难点：最左节点怎么获取
+     * @param root
+     * @param leftNode
+     */
+    static  void prePrintEdgeNodeReverse(TreeNode root,TreeNode leftNode){
+        if(root==null)
+            return;
+        if(leftNode==null)
+            System.out.println(root.value);
+        else{
+            if(leftNode.left==null&&leftNode.right==null
+                    &&root.left==null&&root.right.right==null)
+                System.out.println(root.value);
+        }
+
+    }
+
+
+    /**
      * 先序遍历递归版(非递归版在栈和队列一章中)
      * @param root
      */
@@ -64,6 +83,12 @@ public class BinaryTree {
         preTraverse(root.right);
     }
 
+    /**
+     * 二叉树序列化
+     * @param root
+     * @param str
+     * @return
+     */
     static  StringBuffer preTraverseSeri(TreeNode root,StringBuffer str){
         if(root==null)
             return str.append("#!");
@@ -152,12 +177,13 @@ public class BinaryTree {
      * @param root
      */
     static  void printTreeAsFormated(TreeNode root){
-          Queue<TreeNode> nodesQueue=new LinkedList<TreeNode>();
+        Queue<TreeNode> nodesQueue=new LinkedList<TreeNode>();
         nodesQueue.add(root);
-        TreeNode last=null;
+        TreeNode last=root;
         TreeNode nextlast=null;
           while (!nodesQueue.isEmpty()){
               TreeNode node1=nodesQueue.poll();
+              System.out.print(node1.value);
               if(node1.left!=null){
                   nextlast=node1.left;
                   nodesQueue.add(node1.left);
@@ -166,9 +192,11 @@ public class BinaryTree {
                   nextlast=node1.right;
                   nodesQueue.add(node1.right);
               }
-              System.out.println(node1.value);
-              if(node1==last)
+              if(node1==last){
+                  System.out.println();
                   last=nextlast;
+              }
+
           }
     }
 
@@ -206,7 +234,6 @@ public class BinaryTree {
 
     static int pos=0;
     static  TreeNode deserializeBTree(String str){
-
         String[] a=str.split("!");
         TreeNode node=new TreeNode();
         TreeNode res=preCreateBTree(a,node,node,null,false);
@@ -231,11 +258,11 @@ public class BinaryTree {
 /*        midTraverse(t1);
         recurMidTraverse(t1);*/
         //postTraverse(t1);
-        //printTreeAsFormated(t1);
+        printTreeAsFormated(t1);
         //System.out.println(serializeBTree(t1));
-        TreeNode t5=new TreeNode();
+/*        TreeNode t5=new TreeNode();
         String serialStr="1!2!4!#!#!#!3!#!#!";
-        deserializeBTree(serialStr);
+        deserializeBTree(serialStr);*/
         //指针仍未释放一样
 /*        TreeNode root=new TreeNode();
         TreeNode test6=new TreeNode();
