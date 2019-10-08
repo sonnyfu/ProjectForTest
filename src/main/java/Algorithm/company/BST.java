@@ -14,9 +14,9 @@ public class BST {
 	private BST right;
 	private BST parent;//for recall
 	
-	
-	
 	private Integer val;
+	private Integer bf=0;//balancefactor
+	private Boolean out_of_balance=true;//每个节点默认有不平衡的特性
 	
 	public BST(Integer val) {
 		this.val=val;
@@ -30,6 +30,61 @@ public class BST {
 	public BST() {
 		
 	}
+	/**
+	 * 
+	 * @param leftSubTreeRootNode
+	 * @return
+	 */
+	public void  rightRotate(BST leftSubTreeRootNode) {
+		BST tmpLLNode=leftSubTreeRootNode.left.left;
+		Integer tmpLVal=leftSubTreeRootNode.left.val;
+		Integer tmpRootVal=leftSubTreeRootNode.val;
+		
+		leftSubTreeRootNode.val=tmpLVal;
+		leftSubTreeRootNode.left.val=tmpLLNode.val;
+		leftSubTreeRootNode.left.left=null;
+		tmpLLNode.val=tmpRootVal;
+		leftSubTreeRootNode.right=tmpLLNode;
+		
+		//bf置0
+		leftSubTreeRootNode.bf=0;
+		leftSubTreeRootNode.left.bf=0;
+		leftSubTreeRootNode.right.bf=0;
+		
+	}
+	
+	/**
+	 * 二叉平衡树版本
+	 * @param val
+	 * @param node
+	 */
+	public BST insertInBalance(Integer val,BST node) {
+		if(node==null) {
+			BST tmpode=new BST();
+			tmpode.val=val;
+			return tmpode;
+		}
+		if(val<node.val) {
+			node.left=insertInBalance(val,node.left);
+			node.left.parent=node;
+			//设置bf（先判断bf，再决定旋转与否）
+			if(node.bf.equals(0)) {
+				node.bf=1;
+			}else if(node.bf.equals(1)&&node.out_of_balance) {//右旋
+				rightRotate(node);
+				if(node.parent!=null) {
+					node.parent.out_of_balance=false;	
+				}
+				
+			}else {//先右旋再左旋
+				
+			}
+		}else if(val>node.val){
+			node.right=insertInBalance(val,node.right);
+			node.right.parent=node;
+		}
+		return node;
+	}	
 	
 	/**
 	 * 从根节点开始,带父节点
@@ -68,6 +123,9 @@ public class BST {
 			node.left=insert(val,node.left);
 		}else if(val>node.val){
 			node.right=insert(val,node.right);
+		}else {
+			//相等的情况
+			
 		}
 		return node;
 	}	
@@ -147,15 +205,14 @@ public class BST {
 		return node;
 	}	
 	
+	
+	
 	public static void main(String[] args) {
 		BST root=new BST(3);
+		root.insert(2, root);
 		root.insert(1, root);
-		root.insert(4, root);
-		root.insert(5, root);
+		//root.rightRotate(root);
 		root.insert(7, root);
-		
-		
-		
 		BST targetNode=root.getNode(3, root);
 		System.out.println(targetNode==null?targetNode:targetNode.val);
 		root.deleteNode(1, root);
@@ -179,6 +236,14 @@ public class BST {
 		root3.delete(10, root3);
 		System.out.println(root3);		
 		
+		
+		BST root4=new BST(5);
+		root4.insertInBalance(4, root4);
+		root4.insertInBalance(3, root4);
+		root4.insertInBalance(2, root4);
+		root4.insertInBalance(1, root4);
+		
+		System.out.println(root4);	
 		
 	}
 	
